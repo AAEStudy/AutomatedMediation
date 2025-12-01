@@ -1,5 +1,6 @@
 AutomatedMediation: Automatically Run and Summarize Mediation Analyses
 ================
+Blog post: https://rstudioclass.blogspot.com/2025/12/r-class-final-project.html
 
 ## Brief Overview
 
