@@ -5,8 +5,8 @@ AutomatedMediation: Automatically Run and Summarize Mediation Analyses
 
 `AutomatedMediation` is an R package that wraps the Python
 `pyprocessmacro` implementation of PROCESS model 4 via the `reticulate`
-package, providing the exponentially faster speed of Python’s PROCESS macro 
-while maintaining the workflow convenience and other advantages of RStudio.
+package, combining  the superior computational efficiency of python 
+with the workflow convenience and many other advantages of RStudio.
 
 The main function, `automated_mediation()`, interactively:
 
