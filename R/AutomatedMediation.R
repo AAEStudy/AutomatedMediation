@@ -405,5 +405,3 @@ def _run_process_wrapper(dat, mdl, xvar, yvar, med_list, ctrls, ctrls_in, suppre
   invisible(TRUE)
 }
 
-# ----------------- Run -----------------
-automated_mediation()
