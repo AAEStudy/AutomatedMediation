@@ -16,5 +16,5 @@ Depends: R (>= 3.1.2)
 Imports: reticulate
 License: CC0
 LazyData: true
-URL: https://github.com/zwunder/AutomatedMediation
-BugReports: https://github.com/zwunder/AutomatedMediation/issues
+URL: https://github.com/AAEStudy/AutomatedMediation
+BugReports: https://github.com/AAEStudy/AutomatedMediation/issues
