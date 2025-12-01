@@ -5,9 +5,9 @@ AutomatedMediation: Automatically Run and Summarize Mediation Analyses
 
 `AutomatedMediation` is an R package that automatically runs every possible
 simple mediation analysis between any number of specified variables. It 
-wraps the Python `pyprocessmacro` implementation of PROCESS model 4 via the
-`reticulate` package, leveraging the superior computational efficiency of 
-python's version of the PROCESS macro in combination with workflow convenience 
+wraps the [`pyprocessmacro`](https://github.com/QuentinAndre/pyprocessmacro) implementation of PROCESS model 4 via the
+`reticulate` package, leveraging the superior computational efficiency of python
+in combination with workflow convenience 
 and many other advantages of R Studio.
 
 The main function, `automated_mediation()`, interactively:
@@ -139,7 +139,10 @@ and other functions and advantages of RStudio.
 This package relies on the Python library
 [`pyprocessmacro`](https://github.com/QuentinAndre/pyprocessmacro)
 by **Quentin André**, which re-implements Andrew F. Hayes' PROCESS macro
-for moderation, mediation, and conditional process analysis in Python.
-`AutomatedMediation` package automates analyses and provides a convenient R wrapper around
+for moderation, mediation, and conditional process analysis in Python. 
+The `pyprocessmacro` library is distributed under the MIT License (© Quentin André);
+see the project repository for details: https://github.com/QuentinAndre/pyprocessmacro
+
+`AutomatedMediation` automates analyses and provides a convenient R wrapper around
 this functionality using `reticulate`, but all underlying 
 statistical estimation is carried out by 'pyprocess'.
