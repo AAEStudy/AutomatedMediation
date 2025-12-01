@@ -1,0 +1,20 @@
+Package: AutomatedMediation
+Title: Automatically Run and Summarize Mediation Analyses
+Version: 0.0.0.9000
+Authors@R: 
+    person("Zachary", "Wunder", 
+           email = "zwunder@usf.edu", 
+           role = c("aut", "cre"))
+Description: A script for automatically running and summarizing every possible
+    mediation analysis for any number of specified variables in a dataset.
+    The package interfaces with Python's 'pyprocessmacro' through
+    'reticulate' for fast and efficient estimation of indirect and direct
+    effects, bootstrapped confidence intervals, and output to a CSV file.
+    Designed for anyone who frequently tests mediation models with many
+    predictors, mediators, and outcomes.
+Depends: R (>= 3.1.2)
+Imports: reticulate
+License: CC0
+LazyData: true
+URL: https://github.com/zwunder/AutomatedMediation
+BugReports: https://github.com/zwunder/AutomatedMediation/issues

@@ -1,30 +1,29 @@
-AutomatedMediation: Automatically Run and Summarize Mediation Analyses
-================
+---
+title: "AutomatedMediation: Automatically Run and Summarize Mediation Analyses"
+output: github_document
+---
 
 ## Overview
 
-`AutomatedMediation` is an R package that wraps the Python
-`pyprocessmacro` implementation of PROCESS model 4 via the `reticulate`
-package.
+`AutomatedMediation` is an R package that wraps the Python `pyprocessmacro`
+implementation of PROCESS model 4 via the `reticulate` package.
 
 The main function, `automated_mediation()`, interactively:
 
 - Prompts you for a CSV file in your working directory.
-- Lets you choose a set of variables of interest (predictors, mediators,
-  outcomes).
+- Lets you choose a set of variables of interest (predictors, mediators, outcomes).
 - Optionally lets you specify control variables.
 - Automatically runs all ordered X–M–Y combinations as mediation models.
 - Prints significant indirect effects to the console.
 - Optionally writes a summary CSV of all model results.
 
-This is useful when you have many variables of interest and want to
-quickly investigate mediational pathways among them. The csv output
-allows for easy filtering in excel for significant effects by predictor,
-mediator, outcome or any specific combinations.
+This is useful when you have many variables of interest and want to quickly investigate
+mediational pathways among them. The csv output allows for easy filtering in excel 
+for significant effects by predictor, mediator, outcome or any specific combinations.
 
 ## Installation
 
-``` r
+```r
 # install.packages("devtools")   # if needed
 devtools::install_github("zwunder/AutomatedMediation")
 ```
@@ -42,7 +41,7 @@ On first run, `automated_mediation()` will:
 
 ## Basic Usage
 
-``` r
+```r
 library(AutomatedMediation)
 
 # Make sure your working directory contains your CSV,
@@ -54,12 +53,12 @@ automated_mediation()
 
 You will then be prompted for:
 
-1.  The CSV file name (e.g., `"psychdataset.csv"`).
-2.  A list of variables of interest (minimum 3), separated by comma and
-    space: e.g. `X1, X2, M1, Y1`.
-3.  Whether to print direct effects for significant mediations.
-4.  Whether to include control variables.
-5.  Whether to write a results CSV, and its base file name.
+1. The CSV file name (e.g., `"psychdataset.csv"`).
+2. A list of variables of interest (minimum 3), separated by comma and space:
+   e.g. `X1, X2, M1, Y1`.
+3. Whether to print direct effects for significant mediations.
+4. Whether to include control variables.
+5. Whether to write a results CSV, and its base file name.
 
 ## Example (conceptual)
 
@@ -72,7 +71,7 @@ Suppose your CSV has columns:
 
 You could run:
 
-``` r
+```r
 automated_mediation()
 # Enter CSV file name: psychdataset.csv
 # Enter all interest variables (min 3): anxiety, depression, attentional_control
@@ -84,22 +83,17 @@ automated_mediation()
 
 The function will:
 
-- Explore all ordered triples of the interest variables (e.g., Anxiety →
-  Depression → Attentional Control, Depression → Anxiety → Attentional
-  Control, etc.).
-- For each model, estimate the indirect effect and its bootstrapped
-  confidence interval.
+- Explore all ordered triples of the interest variables
+  (e.g., Anxiety → Depression → Attentional Control, Depression → Anxiety → Attentional Control, etc.).
+- For each model, estimate the indirect effect and its bootstrapped confidence interval.
 - Print any significant indirect effects to the console.
-- Save a summary CSV called `mediation_results.csv` in your working
-  directory.
+- Save a summary CSV called `mediation_results.csv` in your working directory.
 
 ## Notes and Limitations
 
 - All variables included in the mediation models must be **numeric** and
   must not contain missing values.
-- Each additional variable increases the number of possible mediation
-  models combinatorially, so large sets of variables can take a long
-  time to run.
-- This package is intended as a rapid exploration tool; any models of
-  substantive interest should be followed up with careful, theory-driven
-  analysis.
+- Each additional variable increases the number of possible mediation models
+  combinatorially, so large sets of variables can take a long time to run.
+- This package is intended as a rapid exploration tool; any models of substantive
+  interest should be followed up with careful, theory-driven analysis.
