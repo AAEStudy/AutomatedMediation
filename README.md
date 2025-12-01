@@ -40,6 +40,9 @@ On first run, `automated_mediation()` will:
 - Install the Python packages `numpy<2`, `pandas`, and `pyprocessmacro`
   into that environment using `reticulate::py_install()`.
 
+  ****NOTE -- FIRST RUN CAN TAKE 5-10 MINUTES!
+  Creating the python environment naturally takes a bit longer and this is normal!
+
 ## Basic Usage
 
 ``` r
