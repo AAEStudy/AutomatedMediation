@@ -1,11 +1,12 @@
 AutomatedMediation: Automatically Run and Summarize Mediation Analyses
 ================
 
-## Overview
+## Brief Overview
 
 `AutomatedMediation` is an R package that wraps the Python
 `pyprocessmacro` implementation of PROCESS model 4 via the `reticulate`
-package.
+package, providing the exponentially faster speed of Python’s PROCESS macro 
+while maintaining the workflow convenience and other advantages of RStudio.
 
 The main function, `automated_mediation()`, interactively:
 
@@ -106,3 +107,26 @@ The function will:
 - This package is intended as a rapid exploration tool; any models of
   substantive interest should be followed up with careful, theory-driven
   analysis.
+
+## More on the Rationale Behind This Script
+A simple mediation assesses whether an independent variable (X) predicts 
+or affects a dependent variable (Y) indirectly, through its relationship 
+to a third variable known as the mediator (M). In short it tests whether 
+the following indirect relationship is significant: 
+X → M → Y
+
+Running mediation analyses can be extremely time-consuming, especially when 
+researchers wish to test many potential relationships among multiple variables. 
+For example, if you have 10 variables, manually testing all possible simple mediation 
+paths would require 720 separate analyses. Even in modern statistical software, that 
+process is tedious and extremely time consuming.
+
+This package solves this problem by automatically running all possible mediation analyses 
+between user-specified variables from any wide format CSV dataset and return the results—complete 
+with significance tests, confidence intervals, and a CSV output in a matter of seconds or minutes. 
+
+This package uses the Python version of PROCESS (pyprocessmacro) in an R script, 
+rather than the R version of the package because the Python implementation can perform 
+the analyses exponentially faster. By leveraging the reticulate package, this script provides 
+the speed and reliability of Python’s PROCESS macro while maintaining the workflow convenience 
+and other functions and advantages of RStudio.
