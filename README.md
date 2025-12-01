@@ -133,3 +133,13 @@ rather than the R version of the package because the Python implementation can p
 the analyses exponentially faster. By leveraging the reticulate package, this script provides 
 the speed and reliability of Python’s PROCESS macro while maintaining the workflow convenience 
 and other functions and advantages of RStudio.
+
+## Acknowledgments
+
+This package relies on the Python library
+[`pyprocessmacro`](https://github.com/QuentinAndre/pyprocessmacro)
+by **Quentin André**, which re-implements Andrew F. Hayes' PROCESS macro
+for moderation, mediation, and conditional process analysis in Python.
+`AutomatedMediation` package automates analyses and provides a convenient R wrapper around
+this functionality using `reticulate`, but all underlying 
+statistical estimation is carried out by 'pyprocess'.
