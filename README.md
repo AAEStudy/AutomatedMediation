@@ -114,7 +114,8 @@ The function will:
 A simple mediation assesses whether an independent variable (X) predicts 
 or affects a dependent variable (Y) indirectly, through its relationship 
 to a third variable known as the mediator (M). In short it tests whether 
-the following indirect relationship is significant: 
+the following indirect relationship is significant:
+
 X → M → Y
 
 Running mediation analyses can be extremely time-consuming, especially when 
