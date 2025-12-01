@@ -26,7 +26,7 @@ mediator, outcome or any specific combinations.
 
 ``` r
 # install.packages("devtools")   # if needed
-devtools::install_github("zwunder/AutomatedMediation")
+devtools::install_github("AAEStudy/AutomatedMediation")
 ```
 
 This package depends on:
