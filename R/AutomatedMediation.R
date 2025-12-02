@@ -39,55 +39,146 @@ checkForQuit <- function(x) {
 # ---------- Ensure Python + pyprocessmacro (self-contained) ----------
 
 .ensure_python_process <- function() {
+  env_name   <- "r-pyproc-env"
+  is_windows <- (.Platform$OS.type == "windows")
   
-  env_name <- "r-pyproc-env"  # name of the virtualenv
-  env_dir  <- file.path(virtualenv_root(), env_name)
-  
-  # 1) If the env doesn't exist yet, create it and install packages
-  if (!dir.exists(env_dir)) {
-    message("\nCreating Python virtualenv '", env_name, "'...\n")
+  # Helper: pick a writable base directory on Windows
+  choose_windows_env_dir <- function(env_name) {
+    candidates <- c(
+      Sys.getenv("LOCALAPPDATA"),
+      Sys.getenv("APPDATA"),
+      Sys.getenv("USERPROFILE"),
+      normalizePath("~", winslash = "/", mustWork = FALSE),
+      tempdir()  # last resort
+    )
     
+    candidates <- unique(candidates[nzchar(candidates)])
+    
+    tried_non_temp <- character(0)
+    
+    # Try everything except tempdir() first
+    if (length(candidates) > 0) {
+      non_temp <- candidates
+      if (length(candidates) > 1) {
+        non_temp <- candidates[-length(candidates)]
+      }
+      
+      for (base_dir in non_temp) {
+        tried_non_temp <- c(tried_non_temp, base_dir)
+        dir.create(base_dir, showWarnings = FALSE, recursive = TRUE)
+        
+        test_file <- tempfile(tmpdir = base_dir)
+        ok <- tryCatch({
+          writeLines("test", test_file)
+          TRUE
+        }, error = function(e) FALSE)
+        
+        unlink(test_file, force = TRUE)
+        
+        if (ok) {
+          return(list(
+            path         = file.path(base_dir, env_name),
+            from_temp    = FALSE,
+            tried_non_temp = tried_non_temp
+          ))
+        }
+      }
+    }
+    
+    # Absolute fallback: use tempdir()
+    base_dir <- tempdir()
+    list(
+      path           = file.path(base_dir, env_name),
+      from_temp      = TRUE,
+      tried_non_temp = tried_non_temp
+    )
+  }
+  
+  # Decide env_dir based on OS
+  if (is_windows) {
+    chosen      <- choose_windows_env_dir(env_name)
+    env_dir     <- chosen$path
+    from_temp   <- isTRUE(chosen$from_temp)
+    tried_paths <- chosen$tried_non_temp
+  } else {
+    env_root    <- reticulate::virtualenv_root()
+    env_dir     <- file.path(env_root, env_name)
+    from_temp   <- FALSE
+    tried_paths <- character(0)
+  }
+  
+  # 1) Create env and install packages if needed
+  if (!dir.exists(env_dir)) {
+    message("\nCreating Python virtualenv at:\n  ", env_dir, "\n")
+    
+    # Find a usable Python
     py <- Sys.which("python3")
+    if (py == "" && is_windows) py <- Sys.which("py")  # Windows launcher
     if (py == "") py <- Sys.which("python")
-    if (py == "")
+    
+    if (py == "") {
       stop(
         "No system Python found.\n",
         "Please install Python 3 (e.g., from python.org) and re-run.\n",
         call. = FALSE
       )
+    }
     
-    # Create env
-    virtualenv_create(envname = env_name, python = py)
+    # Create the virtualenv at the chosen path
+    reticulate::virtualenv_create(envname = env_dir, python = py)
     
-    message("\nInstalling numpy<2, pandas, pyprocessmacro in '", env_name, "'...\n")
-    py_install(
+    message("\nInstalling numpy<2, pandas, pyprocessmacro in:\n  ", env_dir, "\n")
+    reticulate::py_install(
       packages = c("numpy<2", "pandas", "pyprocessmacro"),
-      envname  = env_name,
+      envname  = env_dir,
       method   = "virtualenv",
       pip      = TRUE
     )
+  } else {
+    message("\nUsing existing Python virtualenv at:\n  ", env_dir, "\n")
   }
   
-  # 2) Tell reticulate to use this env BEFORE any Python initialization
-  use_virtualenv(env_name, required = TRUE)
+  # 2) Tell reticulate to use this env
+  reticulate::use_virtualenv(env_dir, required = TRUE)
   
-  # 3) Make sure required modules are importable
-  if (!py_module_available("numpy") ||
-      !py_module_available("pandas") ||
-      !py_module_available("pyprocessmacro")) {
+  # 3) Make sure modules are available
+  if (!reticulate::py_module_available("numpy")  ||
+      !reticulate::py_module_available("pandas") ||
+      !reticulate::py_module_available("pyprocessmacro")) {
     stop(
-      "Python env '", env_name, "' is missing numpy/pandas/pyprocessmacro.\n",
+      "Python env '", env_dir, "' is missing numpy/pandas/pyprocessmacro.\n",
       "Try restarting R and re-running this script so it can reinstall.",
       call. = FALSE
     )
   }
   
   # 4) Safety patch: if for some reason numpy.product doesn't exist, alias it
-  py_run_string("
+  reticulate::py_run_string("
 import numpy as np
 if not hasattr(np, 'product'):
     np.product = np.prod
 ")
+  
+  # 5) If we had to fall back to a temp-based env on Windows, explain clearly
+  if (is_windows && isTRUE(from_temp)) {
+    message(
+      "\nNOTE: The Python environment was created in a temporary directory:\n  ",
+      env_dir,
+      "\nThis usually happens because the usual user folders are not writable\n",
+      "or are blocked from running executables (e.g., by OneDrive or security settings).\n"
+    )
+    
+    if (length(tried_paths) > 0) {
+      message(
+        "\nOn this system, I attempted to create the environment under the following\n",
+        "locations but could not write there:\n",
+        paste0("  - ", tried_paths, collapse = "\n"),
+        "\n\nIf possible, please make one of these folders writable/allowed for Python\n",
+        "executables. Once that is done, you can delete the temporary env and re-run\n",
+        "the script so the environment is created in a permanent location.\n"
+      )
+    }
+  }
   
   invisible(TRUE)
 }
