@@ -47,6 +47,19 @@ On first run, `automated_mediation()` will:
 ****NOTE -- FIRST RUN CAN TAKE 5-10 MINUTES!
 Creating the python environment naturally takes a bit longer and this is normal!
 
+On **Windows**, the script tries several user folders (e.g.
+`LOCALAPPDATA`, `APPDATA`, `USERPROFILE`, and your home directory) and
+picks the first location where it can write and run Python. If all of
+these are blocked (for example by OneDrive or security settings), it
+falls back to a temporary directory and will print a message listing
+which paths it tried.
+
+If you see that message, please make one of the listed folders
+writable/allowed for Python executables. Once that folder is usable,
+the environment can be created there and reused across runs (instead of
+having to be recreated in a temporary location each time).
+
+
 ## Basic Usage
 
 ``` r
