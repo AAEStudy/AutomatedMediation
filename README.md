@@ -124,7 +124,7 @@ The function will:
   substantive interest should be followed up with careful, theory-driven
   analysis.
 
-## More on the Rationale Behind This Script
+## More on the Rationale Behind This Package
 A simple mediation assesses whether an independent variable (X) predicts 
 or affects a dependent variable (Y) indirectly, through its relationship 
 to a third variable known as the mediator (M). In short it tests whether 
